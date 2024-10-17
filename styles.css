@@ -1,0 +1,97 @@
+const customTextInput = document.getElementById('custom-text-input');
+const startTestButton = document.getElementById('start-test');
+const textToType = document.getElementById('text-to-type');
+const userInput = document.getElementById('user-input');
+const timerDisplay = document.getElementById('timer');
+const wpmDisplay = document.getElementById('wpm');
+const accuracyDisplay = document.getElementById('accuracy');
+const errorsDisplay = document.getElementById('errors');
+const correctDisplay = document.getElementById('correct');
+const restartButton = document.getElementById('restart');
+const timeSelect = document.getElementById('time-select');
+const originalTextDisplay = document.getElementById('original-text');
+const userTextDisplay = document.getElementById('user-text');
+const typingTestSection = document.getElementById('typing-test-section');
+const customTextSection = document.getElementById('custom-text-section');
+const resultSection = document.getElementById('result-section');
+
+let timer = 60;
+let interval = null;
+let errors = 0;
+let correctKeystrokes = 0;
+let charIndex = 0;
+let started = false;
+
+startTestButton.addEventListener('click', () => {
+    const text = customTextInput.value.trim();
+    if (text.length === 0) {
+        alert('Please enter some text.');
+        return;
+    }
+
+    timer = parseInt(timeSelect.value);
+    timerDisplay.textContent = timer;
+    textToType.innerText = text;
+    customTextSection.style.display = 'none';
+    typingTestSection.style.display = 'block';
+    userInput.disabled = false;
+    userInput.focus();
+});
+
+userInput.addEventListener('input', () => {
+    if (!started) {
+        interval = setInterval(updateTimer, 1000);
+        started = true;
+    }
+
+    const inputText = userInput.value;
+    const text = textToType.innerText;
+
+    if (inputText[charIndex] === text[charIndex]) {
+        correctKeystrokes++;
+        correctDisplay.textContent = correctKeystrokes;
+    } else {
+        errors++;
+        errorsDisplay.textContent = errors;
+    }
+
+    charIndex++;
+
+    if (inputText.length === text.length) {
+        clearInterval(interval);
+        endTest();
+    }
+});
+
+function updateTimer() {
+    if (timer > 0) {
+        timer--;
+        timerDisplay.textContent = timer;
+    } else {
+        clearInterval(interval);
+        endTest();
+    }
+}
+
+function endTest() {
+    userInput.disabled = true;
+    calculateResults();
+    typingTestSection.style.display = 'none';
+    resultSection.style.display = 'block';
+}
+
+function calculateResults() {
+    const wordsTyped = correctKeystrokes / 5;
+    const wpm = Math.round((wordsTyped / (parseInt(timeSelect.value) / 60)));
+    const accuracy = Math.round((correctKeystrokes / charIndex) * 100);
+
+    wpmDisplay.textContent = wpm;
+    accuracyDisplay.textContent = accuracy;
+
+    originalTextDisplay.textContent = textToType.innerText;
+    userTextDisplay.textContent = userInput.value;
+}
+
+restartButton.addEventListener('click', () => {
+    location.reload();
+});

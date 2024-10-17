@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="custom-text-section">
+        <textarea id="custom-text-input" placeholder="Enter your custom text here..."></textarea>
+        <select id="time-select">
+            <option value="30">30 Seconds</option>
+            <option value="60">1 Minute</option>
+            <option value="120">2 Minutes</option>
+            <option value="300">5 Minutes</option>
+            <option value="600">10 Minutes</option>
+            <option value="900">15 Minutes</option>
+        </select>
+        <button id="start-test">Start Test</button>
+    </div>
+
+    <div id="typing-test-section" style="display: none;">
+        <div id="text-to-type"></div>
+        <textarea id="user-input" disabled></textarea>
+        <div>Time: <span id="timer"></span> sec</div>
+    </div>
+
+    <div id="result-section" style="display: none;">
+        <h2>Results</h2>
+        <p>WPM: <span id="wpm"></span></p>
+        <p>Accuracy: <span id="accuracy"></span>%</p>
+        <p>Correct Keystrokes: <span id="correct"></span></p>
+        <p>Errors: <span id="errors"></span></p>
+        <h3>Original Text:</h3>
+        <pre id="original-text"></pre>
+        <h3>Your Input (with Mistakes Highlighted):</h3>
+        <pre id="user-text"></pre>
+        <button id="restart">Restart</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
